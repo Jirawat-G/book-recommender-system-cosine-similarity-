@@ -1,0 +1,2 @@
+best_model_name=svm
+best_test_f1_weighted=0.7286627665955302
