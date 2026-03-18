@@ -16,8 +16,8 @@
     "test_recall_weighted": 0.7483443708609272,
     "train_f1_weighted": 0.998348457350272,
     "test_f1_weighted": 0.7286627665955302,
-    "train_prediction_time_seconds": 0.3723368644714355,
-    "test_prediction_time_seconds": 0.0832951068878173
+    "train_prediction_time_seconds": 0.3741910457611084,
+    "test_prediction_time_seconds": 0.0826911926269531
   },
   "best_precision_oriented_strategy": {
     "strategy": "classify_only_top1",
