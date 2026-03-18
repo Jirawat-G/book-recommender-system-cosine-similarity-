@@ -1,0 +1,11 @@
+{
+  "model_name": "svm",
+  "total_books": 751,
+  "total_classes": 26,
+  "best_params": {
+    "C": 10,
+    "class_weight": null,
+    "kernel": "linear"
+  },
+  "best_cv_score": 0.47216763614695106
+}

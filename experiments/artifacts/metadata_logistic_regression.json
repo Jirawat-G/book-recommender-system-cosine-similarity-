@@ -1,0 +1,11 @@
+{
+  "model_name": "logistic_regression",
+  "total_books": 751,
+  "total_classes": 26,
+  "best_params": {
+    "C": 1,
+    "class_weight": "balanced",
+    "solver": "lbfgs"
+  },
+  "best_cv_score": 0.6483551693980711
+}

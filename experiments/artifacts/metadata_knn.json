@@ -1,0 +1,11 @@
+{
+  "model_name": "knn",
+  "total_books": 751,
+  "total_classes": 26,
+  "best_params": {
+    "metric": "minkowski",
+    "n_neighbors": 9,
+    "weights": "distance"
+  },
+  "best_cv_score": 0.6125544666546646
+}

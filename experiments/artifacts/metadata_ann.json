@@ -1,0 +1,14 @@
+{
+  "model_name": "ann",
+  "total_books": 751,
+  "total_classes": 26,
+  "best_params": {
+    "activation": "tanh",
+    "alpha": 0.01,
+    "hidden_layer_sizes": [
+      100,
+      50
+    ]
+  },
+  "best_cv_score": 0.6172290150299078
+}

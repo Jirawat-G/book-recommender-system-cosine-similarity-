@@ -1,0 +1,5 @@
+{
+  "model_name": "svm_linear",
+  "total_books": 751,
+  "total_classes": 26
+}

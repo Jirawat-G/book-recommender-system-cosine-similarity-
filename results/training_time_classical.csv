@@ -1,0 +1,6 @@
+﻿algorithm,training_time_seconds
+decision_tree,3.7652177810668945
+random_forest,8.887951850891113
+knn,0.2247011661529541
+svm,7.183931112289429
+logistic_regression,21.28479290008545

@@ -1,0 +1,12 @@
+{
+  "model_name": "decision_tree",
+  "total_books": 751,
+  "total_classes": 26,
+  "best_params": {
+    "criterion": "gini",
+    "max_depth": 30,
+    "min_samples_leaf": 1,
+    "min_samples_split": 5
+  },
+  "best_cv_score": 0.4008434558773848
+}

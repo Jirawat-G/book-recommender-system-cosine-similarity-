@@ -1,0 +1,5 @@
+{
+  "model_name": "multinomial_nb",
+  "total_books": 751,
+  "total_classes": 26
+}

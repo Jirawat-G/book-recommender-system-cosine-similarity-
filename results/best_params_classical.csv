@@ -1,0 +1,6 @@
+﻿algorithm,best_params,best_cv_accuracy
+decision_tree,{'max_depth': 50},0.4716666666666667
+random_forest,"{'max_depth': None, 'n_estimators': 150}",0.6116666666666666
+knn,{'n_neighbors': 5},0.6466666666666667
+svm,"{'C': 10, 'kernel': 'sigmoid'}",0.6766666666666667
+logistic_regression,{'C': 10},0.665
