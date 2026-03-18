@@ -1,2 +1,0 @@
-best_model_name=svm
-best_test_accuracy=0.7483443708609272

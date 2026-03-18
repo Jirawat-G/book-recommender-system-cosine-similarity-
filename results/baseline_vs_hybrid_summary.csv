@@ -1,4 +1,0 @@
-﻿group,label,strategy,algorithm,f1@5,hit@5,mrr
-baseline,best_cosine_only,cosine_only,,0.1586502022995963,0.8543046357615894,0.7298013245033113
-baseline,best_classify_only,classify_only_top1,svm,0.1941995385252985,0.7483443708609272,0.7483443708609272
-baseline,best_hybrid,hybrid_top1,svm,0.1941995385252985,0.7483443708609272,0.7483443708609272
