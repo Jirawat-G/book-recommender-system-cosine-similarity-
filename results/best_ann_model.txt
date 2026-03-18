@@ -1,4 +1,4 @@
-best_test_accuracy=0.7549668874172185
-best_params={'units': 256, 'dropout_rate': 0.2, 'learning_rate': 0.01, 'epochs': 20, 'batch_size': 32}
-training_time_seconds=9.906774044036865
-test_prediction_time_seconds=0.05351614952087402
+best_test_accuracy=0.7615894039735099
+best_params={'units': 128, 'dropout_rate': 0.2, 'learning_rate': 0.01, 'epochs': 20, 'batch_size': 32}
+training_time_seconds=6.689103841781616
+test_prediction_time_seconds=0.05255889892578125

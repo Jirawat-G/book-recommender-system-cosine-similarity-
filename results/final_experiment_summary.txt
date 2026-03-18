@@ -1,28 +1,25 @@
 === FINAL EXPERIMENT SUMMARY ===
 
 [Best Classifier]
-algorithm=svm
-test_f1_weighted=0.7286627665955302
-test_accuracy=0.7483443708609272
+algorithm=ann
+test_accuracy=0.7615894039735099
+test_f1_weighted=0.7323387549615427
 
-[Best Precision-Oriented Strategy]
-strategy=classify_only_top1
-algorithm=svm
-f1@5=0.1941995385252985
-hit@5=0.7483443708609272
-mrr=0.7483443708609272
+[Best Strategy by F1@5]
+strategy=hybrid_top1
+algorithm=ann
+f1@5=0.195316572195285
+hit@5=0.7615894039735099
+mrr=0.7615894039735099
 
-[Best Hit-Oriented Strategy]
+[Best Strategy by Hit@5]
 strategy=cosine_only
-algorithm=nan
+algorithm=ann
 f1@5=0.1586502022995963
 hit@5=0.8543046357615894
 mrr=0.7298013245033113
 
 [Deployment Recommendation]
-deployment_strategy=hybrid_top2
-deployment_algorithm=svm
-reason=เลือก top2 เพราะ f1@5 ลดลงเพียง 0.019788 แต่ hit@5 เพิ่มขึ้น 0.066225 จึงเหมาะกับการใช้งานจริงมากกว่า
-f1@5=0.1744114599098024
-hit@5=0.8145695364238411
-mrr=0.7434878587196468
+strategy=hybrid_top2
+algorithm=ann
+reason=เลือก top2 เพราะช่วยเพิ่มโอกาสพบหนังสือที่เกี่ยวข้อง และค่า F1@5 ลดลงไม่มาก

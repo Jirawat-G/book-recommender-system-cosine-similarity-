@@ -1,68 +1,26 @@
 {
   "best_classifier": {
-    "rank": 1,
-    "algorithm": "svm",
-    "train_accuracy": 0.9983333333333332,
-    "test_accuracy": 0.7483443708609272,
-    "train_precision_macro": 0.996153846153846,
-    "test_precision_macro": 0.6666173570019723,
-    "train_recall_macro": 0.9974358974358974,
-    "test_recall_macro": 0.6663669776017953,
-    "train_f1_macro": 0.9966494485550746,
-    "test_f1_macro": 0.6522208392358579,
-    "train_precision_weighted": 0.9985,
-    "test_precision_weighted": 0.733701655224834,
-    "train_recall_weighted": 0.9983333333333332,
-    "test_recall_weighted": 0.7483443708609272,
-    "train_f1_weighted": 0.998348457350272,
-    "test_f1_weighted": 0.7286627665955302,
-    "train_prediction_time_seconds": 0.3741910457611084,
-    "test_prediction_time_seconds": 0.0826911926269531
+    "algorithm": "ann",
+    "test_accuracy": 0.7615894039735099,
+    "test_f1_weighted": 0.7323387549615427
   },
-  "best_precision_oriented_strategy": {
-    "strategy": "classify_only_top1",
-    "algorithm": "svm",
-    "top_k_classes": 1,
-    "precision@1": 0.7483443708609272,
-    "recall@1": 0.0242217376305074,
-    "f1@1": 0.0460134441460124,
-    "hit@1": 0.7483443708609272,
-    "precision@3": 0.7483443708609272,
-    "recall@3": 0.0726652128915224,
-    "f1@3": 0.1260660117386347,
-    "hit@3": 0.7483443708609272,
-    "precision@5": 0.7483443708609272,
-    "recall@5": 0.1211086881525374,
-    "f1@5": 0.1941995385252985,
-    "hit@5": 0.7483443708609272,
-    "mrr": 0.7483443708609272
+  "best_strategy_by_f1": {
+    "strategy": "hybrid_top1",
+    "algorithm": "ann",
+    "f1@5": 0.195316572195285,
+    "hit@5": 0.7615894039735099,
+    "mrr": 0.7615894039735099
   },
-  "best_hit_oriented_strategy": {
+  "best_strategy_by_hit": {
     "strategy": "cosine_only",
-    "algorithm": NaN,
-    "top_k_classes": 0,
-    "precision@1": 0.6556291390728477,
-    "recall@1": 0.0216949283891135,
-    "f1@1": 0.0411456990031415,
-    "hit@1": 0.6556291390728477,
-    "precision@3": 0.6291390728476822,
-    "recall@3": 0.0628399836239392,
-    "f1@3": 0.1086958533522709,
-    "hit@3": 0.7880794701986755,
-    "precision@5": 0.6092715231788076,
-    "recall@5": 0.0987832127103273,
+    "algorithm": "ann",
     "f1@5": 0.1586502022995963,
     "hit@5": 0.8543046357615894,
     "mrr": 0.7298013245033113
   },
   "deployment_recommendation": {
-    "deployment_strategy": "hybrid_top2",
-    "deployment_algorithm": "svm",
-    "reason": "เลือก top2 เพราะ f1@5 ลดลงเพียง 0.019788 แต่ hit@5 เพิ่มขึ้น 0.066225 จึงเหมาะกับการใช้งานจริงมากกว่า",
-    "reference_metrics": {
-      "f1@5": 0.1744114599098024,
-      "hit@5": 0.8145695364238411,
-      "mrr": 0.7434878587196468
-    }
+    "strategy": "hybrid_top2",
+    "algorithm": "ann",
+    "reason": "เลือก top2 เพราะช่วยเพิ่มโอกาสพบหนังสือที่เกี่ยวข้อง และค่า F1@5 ลดลงไม่มาก"
   }
 }

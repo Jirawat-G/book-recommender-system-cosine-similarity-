@@ -1,2 +1,3 @@
 .venv311
 __pycache__
+artifacts/*.h5

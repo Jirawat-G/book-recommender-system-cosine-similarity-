@@ -14,14 +14,9 @@ from sklearn.metrics import (
 
 from feature_pipeline import build_feature_pipeline, ARTIFACT_DIR, RESULT_DIR, ensure_dirs
 
-# optional ANN
-HAS_TF = True
-try:
-    from tensorflow.keras.models import load_model
-except Exception:
-    HAS_TF = False
+from tensorflow.keras.models import load_model
 
-
+REQUIRE_ANN = True
 RANDOM_STATE = 42
 
 
@@ -76,7 +71,15 @@ def evaluate_sklearn_model(model_name, model, X_train, X_test, y_train, y_test, 
         title=f"Confusion Matrix - {model_name}"
     )
 
-    return {
+    prediction_rows = []
+    for actual, pred in zip(y_test, y_test_pred):
+        prediction_rows.append({
+            "algorithm": model_name,
+            "actual": int(actual),
+            "predicted": int(pred),
+        })
+
+    summary_row = {
         "algorithm": model_name,
         "train_accuracy": train_metrics["accuracy"],
         "test_accuracy": test_metrics["accuracy"],
@@ -96,18 +99,20 @@ def evaluate_sklearn_model(model_name, model, X_train, X_test, y_train, y_test, 
         "test_prediction_time_seconds": float(test_pred_time),
     }
 
+    return summary_row, prediction_rows
 
-def evaluate_ann_model(bundle, labels):
-    if not HAS_TF:
-        print("skip ANN: tensorflow not available")
-        return None, None
 
+def evaluate_ann_model(bundle):
     ann_model_path = os.path.join(ARTIFACT_DIR, "best_model.h5")
     ann_label_encoder_path = os.path.join(ARTIFACT_DIR, "ann_label_encoder.pkl")
 
     if not os.path.exists(ann_model_path) or not os.path.exists(ann_label_encoder_path):
-        print("skip ANN: best_model.h5 or ann_label_encoder.pkl not found")
-        return None, None
+        if REQUIRE_ANN:
+            raise FileNotFoundError(
+                "ไม่พบ best_model.h5 หรือ ann_label_encoder.pkl "
+                "กรุณารัน train_ann_model.py ก่อน"
+            )
+        return None, []
 
     model = load_model(ann_model_path)
     label_encoder = joblib.load(ann_label_encoder_path)
@@ -140,7 +145,15 @@ def evaluate_ann_model(bundle, labels):
         title="Confusion Matrix - ann"
     )
 
-    result_row = {
+    prediction_rows = []
+    for actual, pred in zip(y_test_int, y_test_pred_int):
+        prediction_rows.append({
+            "algorithm": "ann",
+            "actual": int(actual),
+            "predicted": int(pred),
+        })
+
+    summary_row = {
         "algorithm": "ann",
         "train_accuracy": train_metrics["accuracy"],
         "test_accuracy": test_metrics["accuracy"],
@@ -160,13 +173,7 @@ def evaluate_ann_model(bundle, labels):
         "test_prediction_time_seconds": float(test_pred_time),
     }
 
-    prediction_df = pd.DataFrame({
-        "algorithm": ["ann"] * len(y_test),
-        "actual": y_test_int,
-        "predicted": y_test_pred_int,
-    })
-
-    return result_row, prediction_df
+    return summary_row, prediction_rows
 
 
 def main():
@@ -192,12 +199,11 @@ def main():
 
     for model_name, model_path in sklearn_model_files.items():
         if not os.path.exists(model_path):
-            print(f"skip {model_name}: not found -> {model_path}")
-            continue
+            raise FileNotFoundError(f"ไม่พบ model file: {model_path}")
 
         print(f"evaluate {model_name}")
         model = joblib.load(model_path)
-        result_row = evaluate_sklearn_model(
+        summary_row, pred_rows = evaluate_sklearn_model(
             model_name=model_name,
             model=model,
             X_train=X_train,
@@ -206,30 +212,24 @@ def main():
             y_test=y_test,
             labels=labels
         )
-        summary_rows.append(result_row)
-
-        y_test_pred = model.predict(X_test)
-        for actual, pred in zip(y_test, y_test_pred):
-            prediction_rows.append({
-                "algorithm": model_name,
-                "actual": int(actual),
-                "predicted": int(pred),
-            })
+        summary_rows.append(summary_row)
+        prediction_rows.extend(pred_rows)
 
     # ANN
-    ann_row, ann_pred_df = evaluate_ann_model(bundle, labels)
-    if ann_row is not None:
-        summary_rows.append(ann_row)
-        prediction_rows.extend(ann_pred_df.to_dict(orient="records"))
+    print("evaluate ann")
+    ann_summary_row, ann_pred_rows = evaluate_ann_model(bundle)
+    if ann_summary_row is not None:
+        summary_rows.append(ann_summary_row)
+        prediction_rows.extend(ann_pred_rows)
 
     summary_df = pd.DataFrame(summary_rows)
-    if not summary_df.empty:
-        summary_df = summary_df.sort_values(
-            by=["test_f1_weighted", "test_accuracy"],
-            ascending=False
-        )
-
     prediction_df = pd.DataFrame(prediction_rows)
+
+    # final ranking ใช้ weighted F1 เป็นหลัก
+    summary_df = summary_df.sort_values(
+        by=["test_f1_weighted", "test_accuracy"],
+        ascending=False
+    ).reset_index(drop=True)
 
     summary_df.to_csv(
         os.path.join(RESULT_DIR, "classification_evaluation_summary.csv"),
@@ -242,15 +242,16 @@ def main():
         encoding="utf-8-sig"
     )
 
-    if not summary_df.empty:
-        best_model_name = summary_df.iloc[0]["algorithm"]
-        best_score = summary_df.iloc[0]["test_f1_weighted"]
-        with open(os.path.join(RESULT_DIR, "best_classifier_from_evaluation.txt"), "w", encoding="utf-8") as f:
-            f.write(f"best_model_name={best_model_name}\n")
-            f.write(f"best_test_f1_weighted={best_score}\n")
+    best_model_name = summary_df.iloc[0]["algorithm"]
+    best_score = summary_df.iloc[0]["test_f1_weighted"]
+
+    with open(os.path.join(RESULT_DIR, "best_classifier_from_evaluation.txt"), "w", encoding="utf-8") as f:
+        f.write(f"best_model_name={best_model_name}\n")
+        f.write(f"best_test_f1_weighted={best_score}\n")
 
     print("saved -> results/classification_evaluation_summary.csv")
     print("saved -> results/classification_prediction_details.csv")
+    print("saved -> results/best_classifier_from_evaluation.txt")
 
 
 if __name__ == "__main__":

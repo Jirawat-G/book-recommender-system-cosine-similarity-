@@ -1,2 +1,2 @@
-best_model_name=svm
-best_test_f1_weighted=0.7286627665955302
+best_model_name=ann
+best_test_f1_weighted=0.7323387549615427
